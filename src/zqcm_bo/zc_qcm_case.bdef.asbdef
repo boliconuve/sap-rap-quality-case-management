@@ -1,0 +1,35 @@
+projection;
+strict ( 2 );
+
+define behavior for ZC_QCM_CASE alias QualityCase
+{
+  use create;
+  use update;
+  use delete;
+
+  use association _Notes { create; }
+  use association _Approvals { create; }
+  use association _History;
+}
+
+define behavior for ZC_QCM_APPROVAL alias QualityApproval
+{
+  use update;
+  use delete;
+
+  use association _Case;
+}
+
+define behavior for ZC_QCM_HISTORY alias QualityHistory
+{
+
+  use association _Case;
+}
+
+define behavior for ZC_QCM_NOTE alias QualityNote
+{
+  use update;
+  use delete;
+
+  use association _Case;
+}

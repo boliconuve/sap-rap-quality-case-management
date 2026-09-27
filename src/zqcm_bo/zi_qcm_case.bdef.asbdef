@@ -1,0 +1,154 @@
+managed implementation in class zbp_i_qcm_case unique;
+strict ( 2 );
+
+define behavior for ZI_QCM_CASE
+alias QualityCase
+persistent table zqcm_case
+lock master
+authorization master ( instance )
+etag master LocalLastChangedAt
+{
+  create;
+  update;
+  delete;
+  field ( readonly, numbering : managed ) CaseId;
+  field ( readonly ) CreatedBy,
+                     CreatedAt,
+                     LocalLastChangedBy,
+                     LocalLastChangedAt,
+                     LastChangedAt;
+
+  association     _Notes {create;}
+  association _Approvals {create;}
+  association _History   {create;}
+
+  mapping for zqcm_case
+  {
+    CaseId                 = case_uuid;
+    CaseNumber             = case_number;
+    Title                  = title;
+    Description            = description;
+    CategoryId             = category_id;
+    PriorityCode           = priority_code;
+    StatusCode             = status_code;
+    PlantId                = plant_id;
+    ReporterId             = reporter_id;
+    InvestigatorId         = investigator_id;
+    OccurrenceDate         = occurrence_date;
+    DueDate                = due_date;
+    Resolution             = resolution;
+    CreatedBy              = created_by;
+    CreatedAt              = created_at;
+    LocalLastChangedBy     = local_last_changed_by;
+    LocalLastChangedAt     = local_last_changed_at;
+    LastChangedAt          = last_changed_at;
+  }
+}
+
+define behavior for ZI_QCM_NOTE
+alias QualityNote
+persistent table zqcm_note
+lock dependent by _Case
+authorization dependent by _Case
+etag master LocalLastChangedAt
+{
+  update;
+  delete;
+
+  field ( readonly, numbering : managed ) NoteId;
+
+  field ( readonly )
+    CaseId,
+    CreatedBy,
+    CreatedAt,
+    LocalLastChangedBy,
+    LocalLastChangedAt,
+    LastChangedAt;
+
+  association _Case;
+
+  mapping for zqcm_note
+  {
+    NoteId                 = note_uuid;
+    CaseId                 = case_uuid;
+    TypeCode               = note_type_code;
+    Text                   = note_text;
+    InternalFlag           = internal_flag;
+    CreatedBy              = created_by;
+    CreatedAt              = created_at;
+    LocalLastChangedBy     = local_last_changed_by;
+    LocalLastChangedAt     = local_last_changed_at;
+    LastChangedAt          = last_changed_at;
+  }
+}
+
+define behavior for ZI_QCM_APPROVAL
+alias QualityApproval
+persistent table zqcm_approval
+lock dependent by _Case
+authorization dependent by _Case
+etag master LocalLastChangedAt
+{
+  update;
+  delete;
+
+  field ( readonly, numbering : managed ) ApprovalId;
+
+  field ( readonly )
+    CaseId,
+    CreatedBy,
+    CreatedAt,
+    LocalLastChangedBy,
+    LocalLastChangedAt,
+    LastChangedAt;
+
+  association _Case;
+
+  mapping for zqcm_approval
+  {
+    ApprovalId             = approval_uuid;
+    CaseId                 = case_uuid;
+    ApprovalStep           = approval_step;
+    DecisionCode           = decision_code;
+    ApproverId             = approver_id;
+    RequestedBy            = requested_by;
+    RequestedAt            = requested_at;
+    DecidedAt              = decided_at;
+    DecisionReason         = decision_reason;
+    CreatedBy              = created_by;
+    CreatedAt              = created_at;
+    LocalLastChangedBy     = local_last_changed_by;
+    LocalLastChangedAt     = local_last_changed_at;
+    LastChangedAt          = last_changed_at;
+  }
+}
+
+define behavior for ZI_QCM_HISTORY
+alias QualityHistory
+persistent table zqcm_history
+lock dependent by _Case
+authorization dependent by _Case
+{
+
+  field ( readonly, numbering : managed ) HistoryId;
+
+  field ( readonly )
+    CaseId,
+    CreatedBy,
+    CreatedAt;
+
+  association _Case;
+
+  mapping for zqcm_history
+  {
+    HistoryId              = history_uuid;
+    CaseId                 = case_uuid;
+    EventCode              = event_code;
+    PreviousStatusCode     = previous_status_code;
+    NewStatusCode          = new_status_code;
+    ActorId                = actor_id;
+    EventText              = event_text;
+    CreatedBy              = created_by;
+    CreatedAt              = created_at;
+  }
+}

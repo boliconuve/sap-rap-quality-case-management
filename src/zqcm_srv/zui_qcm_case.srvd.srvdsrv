@@ -1,0 +1,5 @@
+@EndUserText.label: 'Service definition for Quality Cases'
+define service ZUI_QCM_CASE {
+  expose ZC_QCM_CASE     as QualityCases;
+  expose ZC_QCM_CATEGORY as Categories;
+}
