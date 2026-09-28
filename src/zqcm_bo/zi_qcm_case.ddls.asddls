@@ -21,10 +21,20 @@ define root view entity ZI_QCM_CASE
         occurrence_date         as OccurrenceDate,
         due_date                as DueDate,
         resolution              as Resolution,
+        
+        @Semantics.user.createdBy: true
         created_by              as CreatedBy,
+        
+        @Semantics.systemDateTime.createdAt: true
         created_at              as CreatedAt,
+        
+        @Semantics.user.localInstanceLastChangedBy: true
         local_last_changed_by   as LocalLastChangedBy,
+        
+        @Semantics.systemDateTime.localInstanceLastChangedAt: true
         local_last_changed_at   as LocalLastChangedAt,
+        
+        @Semantics.systemDateTime.lastChangedAt: true
         last_changed_at         as LastChangedAt,
         
         // Navigations

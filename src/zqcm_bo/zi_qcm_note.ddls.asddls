@@ -10,10 +10,20 @@ define view entity ZI_QCM_NOTE
         note_type_code          as TypeCode,
         note_text               as Text,
         internal_flag           as InternalFlag,
+        
+        @Semantics.user.createdBy: true
         created_by              as CreatedBy,
+        
+        @Semantics.systemDateTime.createdAt: true
         created_at              as CreatedAt,
+        
+        @Semantics.user.localInstanceLastChangedBy: true
         local_last_changed_by   as LocalLastChangedBy,
+        
+        @Semantics.systemDateTime.localInstanceLastChangedAt: true
         local_last_changed_at   as LocalLastChangedAt,
+        
+        @Semantics.systemDateTime.lastChangedAt: true
         last_changed_at         as LastChangedAt,
         
         // Case Association

@@ -2,4 +2,7 @@
 define service ZUI_QCM_CASE {
   expose ZC_QCM_CASE     as QualityCases;
   expose ZC_QCM_CATEGORY as Categories;
+  expose ZC_QCM_NOTE     as QualityNotes;
+  expose ZC_QCM_APPROVAL as QualityApprovals;
+  expose ZC_QCM_HISTORY  as QualityHistory;
 }

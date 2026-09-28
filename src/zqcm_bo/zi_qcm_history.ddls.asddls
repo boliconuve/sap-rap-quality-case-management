@@ -12,7 +12,10 @@ define view entity ZI_QCM_HISTORY
         new_status_code         as NewStatusCode,
         actor_id                as ActorId,
         event_text              as EventText,
+        @Semantics.user.createdBy: true
         created_by              as CreatedBy,
+        
+        @Semantics.systemDateTime.createdAt: true
         created_at              as CreatedAt,
         
         // CASE ASSOCIATION

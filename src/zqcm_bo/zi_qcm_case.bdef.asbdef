@@ -1,16 +1,28 @@
 managed implementation in class zbp_i_qcm_case unique;
 strict ( 2 );
+with draft;
 
 define behavior for ZI_QCM_CASE
 alias QualityCase
 persistent table zqcm_case
-lock master
-authorization master ( instance )
+draft table zqcm_case_d
+lock master total etag LastChangedAt
+authorization master ( none )
 etag master LocalLastChangedAt
 {
   create;
   update;
   delete;
+
+  draft action Edit;
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Resume;
+  draft determine action Prepare
+  {
+    validation validateDates;
+  }
+
   field ( readonly, numbering : managed ) CaseId;
   field ( readonly ) CreatedBy,
                      CreatedAt,
@@ -18,9 +30,16 @@ etag master LocalLastChangedAt
                      LocalLastChangedAt,
                      LastChangedAt;
 
-  association     _Notes {create;}
-  association _Approvals {create;}
-  association _History   {create;}
+  association     _Notes {create; with draft;}
+  association _Approvals {create; with draft;}
+  association _History   {create; with draft;}
+
+  validation validateDates on save
+  {
+    create;
+    update;
+    field OccurrenceDate, DueDate;
+  }
 
   mapping for zqcm_case
   {
@@ -43,11 +62,14 @@ etag master LocalLastChangedAt
     LocalLastChangedAt     = local_last_changed_at;
     LastChangedAt          = last_changed_at;
   }
+
+
 }
 
 define behavior for ZI_QCM_NOTE
 alias QualityNote
 persistent table zqcm_note
+draft table zqcm_note_d
 lock dependent by _Case
 authorization dependent by _Case
 etag master LocalLastChangedAt
@@ -65,7 +87,7 @@ etag master LocalLastChangedAt
     LocalLastChangedAt,
     LastChangedAt;
 
-  association _Case;
+  association _Case {with draft;}
 
   mapping for zqcm_note
   {
@@ -85,6 +107,7 @@ etag master LocalLastChangedAt
 define behavior for ZI_QCM_APPROVAL
 alias QualityApproval
 persistent table zqcm_approval
+draft table zqcm_approval_d
 lock dependent by _Case
 authorization dependent by _Case
 etag master LocalLastChangedAt
@@ -102,7 +125,7 @@ etag master LocalLastChangedAt
     LocalLastChangedAt,
     LastChangedAt;
 
-  association _Case;
+  association _Case {with draft;}
 
   mapping for zqcm_approval
   {
@@ -126,6 +149,7 @@ etag master LocalLastChangedAt
 define behavior for ZI_QCM_HISTORY
 alias QualityHistory
 persistent table zqcm_history
+draft table zqcm_history_d
 lock dependent by _Case
 authorization dependent by _Case
 {
@@ -137,7 +161,7 @@ authorization dependent by _Case
     CreatedBy,
     CreatedAt;
 
-  association _Case;
+  association _Case {with draft;}
 
   mapping for zqcm_history
   {
