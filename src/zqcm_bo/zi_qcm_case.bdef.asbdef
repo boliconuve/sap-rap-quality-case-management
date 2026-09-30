@@ -21,9 +21,11 @@ etag master LocalLastChangedAt
   draft determine action Prepare
   {
     validation validateDates;
+    validation validateCategory;
   }
 
   field ( readonly, numbering : managed ) CaseId;
+  field ( mandatory : create ) Title, CategoryId;
   field ( readonly ) CreatedBy,
                      CreatedAt,
                      LocalLastChangedBy,
@@ -39,6 +41,13 @@ etag master LocalLastChangedAt
     create;
     update;
     field OccurrenceDate, DueDate;
+  }
+
+  validation validateCategory on save
+  {
+    create;
+    update;
+    field CategoryId;
   }
 
   mapping for zqcm_case
